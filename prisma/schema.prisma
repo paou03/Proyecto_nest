@@ -6,7 +6,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
+
 }
 
 datasource db {
@@ -23,6 +23,9 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   role      Role     @default(USER)
+  
+  tenantId  Int      // <--- Asegúrate de tener este campo
+  tenant    Tenant   @relation(fields: [tenantId], references: [id]) // <--- Y esta relación
 }
 
 enum Role {
@@ -31,7 +34,8 @@ enum Role {
 }
 model Tenant {
   id        Int      @id @default(autoincrement())
-  name      String   @unique
+  name      String   // <--- Añade esta línea aquí
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  users     User[]
 }
