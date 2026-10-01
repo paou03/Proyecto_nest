@@ -4,38 +4,38 @@
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
-generator client {
-  provider = "prisma-client-js"
-
+model User {
+id Int @id @default(autoincrement())
+email String @unique
+name String?
+password String
+telephone String?
+createdAt DateTime @default(now())
+updatedAt DateTime @updatedAt
+role Role @default(USER)
+tenantId Int
+tenant Tenant @relation(fields: [tenantId], references: [id])
 }
+
+
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+ provider = "sqlite"
+ url = env("DATABASE_URL")
+
 }
 
-model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  name      String?
-  password  String
-  telephone String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  role      Role     @default(USER)
-  
-  tenantId  Int      // <--- Asegúrate de tener este campo
-  tenant    Tenant   @relation(fields: [tenantId], references: [id]) // <--- Y esta relación
-}
 
 enum Role {
-  USER
-  ADMIN
+ USER
+ ADMIN
 }
+
 model Tenant {
-  id        Int      @id @default(autoincrement())
-  name      String   // <--- Añade esta línea aquí
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  users     User[]
+id Int @id @default(autoincrement())
+users User[]
+}
+
+generator client {
+  provider = "prisma-client-js"
 }
