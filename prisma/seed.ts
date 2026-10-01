@@ -40,7 +40,7 @@ async function main() {
       password: hashedPassword,
       telephone: '+1-555-0102',
       role: 'USER' as any,
-      tenant: {
+      tenants: {
         connect: { id: tenant1.id },
       },
     },
